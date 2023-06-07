@@ -1,0 +1,6 @@
+[submodule "glific"]
+	path = glific
+	url = https://github.com/glific/glific
+[submodule "glific-frontend"]
+	path = glific-frontend
+	url = https://github.com/glific/glific-frontend

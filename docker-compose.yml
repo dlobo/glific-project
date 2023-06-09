@@ -51,6 +51,7 @@ services:
     healthcheck:
       test: "${DOCKER_SERVER_HEALTHCHECK_TEST}"
     volumes:
+      - cert:/app/glific/priv/cert
       - mix:/root/.mix
       - hex:/root/.hex
       - node_modules:/app/assets/node_modules
@@ -70,6 +71,7 @@ services:
       test: "${DOCKER_CLIENT_HEALTHCHECK_TEST}"
     volumes:
       - node_modules:/app/assets/node_modules
+      - cert:/app/glific-frontend/cert
       
   postgres:
     image: postgres:${POSTGRES_VERSION}-alpine
@@ -84,6 +86,7 @@ services:
       - 5432:5432
 
 volumes:
+  cert:
   mix:
   hex:
   node_modules:

@@ -5,7 +5,6 @@ x-app: &default-app
   stop_grace_period: "3s"
   tty: true
   build:
-    context: .
     args:
       ELIXIR_VERSION: ${ELIXIR_VERSION}
       ERLANG_VERSION: ${ERLANG_VERSION}
@@ -20,7 +19,6 @@ x-app: &default-app
     HISTFILE: /app/log/.shell_history
     PSQL_HISTFILE: /app/log/.psql_history
     ERL_AFLAGS: -kernel shell_history enabled
-
   image: glific-docker:0.0.1
   tmpfs:
     - /tmp
@@ -32,7 +30,7 @@ x-app: &default-app
 
 services:
   backend:
-    <<: *default-app
+    image: glific-backend
     build:
       context: "./glific"
       dockerfile: Dockerfile
@@ -53,7 +51,6 @@ services:
     healthcheck:
       test: "${DOCKER_SERVER_HEALTHCHECK_TEST}"
     volumes:
-      - .:/app
       - mix:/root/.mix
       - hex:/root/.hex
       - node_modules:/app/assets/node_modules
@@ -61,18 +58,18 @@ services:
       - ./log/.erlang-history:/root/.cache/erlang-history
 
   frontend:
-    <<: *default-app
+    image: glific-frontend
     build:
       context: "./glific-frontend"
       dockerfile: Dockerfile
       args:
-        - "CLIENT_PORT=3000"
+        CLIENT_PORT: 3000
     ports:
       - 3000:3000
     healthcheck:
       test: "${DOCKER_CLIENT_HEALTHCHECK_TEST}"
     volumes:
-      - .:/app
+      - node_modules:/app/assets/node_modules
       
   postgres:
     image: postgres:${POSTGRES_VERSION}-alpine

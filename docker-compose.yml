@@ -25,6 +25,9 @@ services:
     volumes:
       - cert:/app/glific/priv/cert
       - .docker/.psqlrc:/root/.psqlrc:ro
+      - mix:/root/.mix
+      - hex:/root/.hex
+      - build:/app/glific/_build
 
   frontend:
     image: glific-frontend
@@ -39,6 +42,8 @@ services:
       test: "${DOCKER_CLIENT_HEALTHCHECK_TEST}"
     volumes:
       - cert:/app/glific-frontend/cert
+      - node_modules:/app/glific-frontend/node_modules
+
       
   postgres:
     image: postgres:${POSTGRES_VERSION}-alpine
@@ -54,3 +59,7 @@ services:
 volumes:
   cert:
   postgres:
+  mix:
+  hex:
+  build:
+  node_modules:

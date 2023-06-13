@@ -28,6 +28,7 @@ services:
       - mix:/root/.mix
       - hex:/root/.hex
       - build:/app/glific/_build
+      - ./glific:/app/glific
 
   frontend:
     image: glific-frontend
